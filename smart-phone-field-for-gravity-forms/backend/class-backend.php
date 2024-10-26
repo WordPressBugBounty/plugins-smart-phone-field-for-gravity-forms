@@ -9,7 +9,7 @@ class GF_smart_phone_field_backend {
 
 	function __construct() {
 		add_action('gform_field_standard_settings', array($this, 'gf_spf_options_settings'), 10, 2);
-		
+
 		add_action('gform_editor_js', array($this, 'gf_spf_editor_script'));
 		add_filter('gform_tooltips', array($this, 'gf_spf_tooltips'));
 		add_action('admin_enqueue_scripts', array($this, 'gf_spf_admin_scripts'));

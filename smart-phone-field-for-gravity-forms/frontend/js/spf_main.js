@@ -80,12 +80,12 @@ $j(document).bind("gform_post_render", function (event, form_id) {
             teleInput   = jQuery(inputId);
 
         teleInput.keypress(function (e) {   
-            var charCode = (e.which) ? e.which : event.keyCode    
-            if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+            var charCode = (e.which) ? e.which : event.keyCode;
+            if (String.fromCharCode(charCode).match(/[^0-9+]/g))    
                 return false;                        
         }); 
 
-        teleInput.keyup(function () {
+        teleInput.on("change", function () {
             var rawNumber = teleInput.intlTelInput("getNumber");
             var country = teleInput.intlTelInput("getSelectedCountryData");
             if (phoneData.flag != "flagdial") {
