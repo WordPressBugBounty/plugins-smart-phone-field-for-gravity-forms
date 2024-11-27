@@ -1,10 +1,12 @@
 === Smart phone field for Gravity Forms ===
-Contributors: kaisarahmmed
+Author: Pluginscafe
+Author URI: https://pluginscafe.com/
+Contributors: kaisarahmmed, pluginscafe
 Tags: Gravityforms, smart phone field, international phone input, phone field, phone validation
 Requires at least: 5.0
 Requires PHP: 7.4
-Tested up to: 6.6.2
-Stable Tag: 2.1.3
+Tested up to: 6.7.1
+Stable Tag: 2.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
@@ -14,7 +16,7 @@ A simple and nice plugin to get auto country flag from user ip address on gravit
 == Description ==
 A simple and nice plugin to get auto country flag from user ip address on gravity form phone field. If the installation is okay, go to gravity forms dashboard. Add a phone field on your form. Open phone field and you will see to enable smart phone field checkbox. Click that checkbox and configure as you want. And save form. You're done!
 
-[View Pro Demo](https://pluginscafe.com/plugin/smart-phone-field-for-gravity-forms-pro/) | [Documentation](https://pluginscafe.com/docs/smart-phone-field-for-gravity-forms-pro/) | [Buy Pro](https://pluginscafe.com/plugin/smart-phone-field-for-gravity-forms-pro/)
+[View Pro Demo](https://pluginscafe.com/demo/smart-phone-field-for-gravity-forms/) | [Documentation](https://pluginscafe.com/docs/smart-phone-field-for-gravity-forms-pro/) | [Buy Pro](https://pluginscafe.com/plugin/smart-phone-field-for-gravity-forms-pro/)
 
 == Free Features ==
 * Live validation.
@@ -68,6 +70,10 @@ It's fixed with a single-page form.
 Installation is fairly straight forward. Install it from the WordPress plugin repository. 
 
 == Change log ==
+
+= 2.1.4 =
+Compatibility with Gravity forms 2.9
+Fix minor bugs
 
 = 2.1.3 =
 Fix plus (+) issue

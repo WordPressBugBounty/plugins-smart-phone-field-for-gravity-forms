@@ -22,8 +22,9 @@ $j(document).bind("gform_post_render", function (event, form_id) {
                 countrySearch: false,
                 formatAsYouType: false,
                 formatOnDisplay: false,
-                fixDropdownWidth: false,
+                fixDropdownWidth: true,
                 initialCountry: 'us',
+                useFullscreenPopup: false
             };
 
         if ( phoneData.de_country !== 0 && phoneData.auto_flag === 0 ) {
@@ -62,6 +63,8 @@ $j(document).bind("gform_post_render", function (event, form_id) {
                 );
             };
         }
+
+        options = gform.applyFilters( 'gform_spf_options_pre_init', options, form_id, field_id);
 
         $j(input_id).intlTelInput(options);    
     });

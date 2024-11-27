@@ -240,7 +240,7 @@ class GF_smart_phone_field_menu {
                                 </div>
                                 <?php _e("Did you know our PRO version includes the ability to use prevent submission with wrong validation and more features? Check it out!", "gravityforms"); ?>
                                 <div class="spf-review-notice-container">
-                                    <a href="https://pluginscafe.com/smart-phone-field-pro/" class="spf-notice-close spf-review-notice button-primary" target="_blank">
+                                    <a href="https://pluginscafe.com/demo/smart-phone-field-for-gravity-forms/" class="spf-notice-close spf-review-notice button-primary" target="_blank">
                                         <?php _e("See The Demo", "gravityforms"); ?>
                                     </a>
                                     <span class="dashicons dashicons-smiley"></span>

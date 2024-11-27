@@ -2,9 +2,9 @@
 /*
 * Plugin Name: Smart phone field for Gravity Forms
 * Plugin Url: https://pluginscafe.com/plugin/smart-phone-field-for-gravity-forms-pro
-* Version: 2.1.3
+* Version: 2.1.4
 * Description: This plugin adds countries flag with ip address on gravity form phone field
-* Author: KaisarAhmmed
+* Author: Pluginscafe
 * Author URI: https://pluginscafe.com
 * License: GPLv2 or later
 * Text Domain: gravityforms
@@ -34,6 +34,7 @@ if (!function_exists('spffgfp_fs')) {
                 'public_key'     => 'pk_435e70ac913b8fea998deacb26d86',
                 'is_premium'     => false,
                 'has_addons'     => false,
+                'premium_suffix' => 'Pro',
                 'has_paid_plans' => true,
                 'menu'           => array(
                     'slug'    => 'smart-phone-field-for-gravity-forms-pro',
@@ -57,7 +58,7 @@ if (!function_exists('spffgfp_fs')) {
 
 
 if (!defined('GF_SMART_PHONE_FIELD_VERSION_NUM'))
-    define('GF_SMART_PHONE_FIELD_VERSION_NUM', '2.1.3');
+    define('GF_SMART_PHONE_FIELD_VERSION_NUM', '2.1.4');
 
 if (!defined('GF_SMART_PHONE_FIELD_FILE'))
     define('GF_SMART_PHONE_FIELD_FILE', __FILE__);
