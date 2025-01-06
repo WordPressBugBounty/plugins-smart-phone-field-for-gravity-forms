@@ -6,7 +6,7 @@ Tags: Gravityforms, smart phone field, international phone input, phone field, p
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.7.1
-Stable Tag: 2.1.4
+Stable Tag: 2.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
@@ -70,6 +70,10 @@ It's fixed with a single-page form.
 Installation is fairly straight forward. Install it from the WordPress plugin repository. 
 
 == Change log ==
+
+= 2.1.5 =
+Fix flag issue
+Fix minor bugs
 
 = 2.1.4 =
 Compatibility with Gravity forms 2.9
