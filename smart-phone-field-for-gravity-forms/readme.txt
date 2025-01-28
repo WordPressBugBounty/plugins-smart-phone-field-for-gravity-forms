@@ -5,8 +5,8 @@ Contributors: kaisarahmmed, pluginscafe
 Tags: Gravityforms, smart phone field, international phone input, phone field, phone validation
 Requires at least: 5.0
 Requires PHP: 7.4
-Tested up to: 6.7.1
-Stable Tag: 2.1.5
+Tested up to: 6.7
+Stable Tag: 2.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
@@ -44,6 +44,16 @@ A simple and nice plugin to get auto country flag from user ip address on gravit
 
 * PHP 5.6
 * Gravity Forms 2.0.0, 2.5.0, 2.7.0 or higher
+
+
+<strong>Smart Phone Field for other contact form addons</strong>
+[Smart Phone Field for WPForms](https://wordpress.org/plugins/smart-phone-field-for-wp-forms/)
+[Smart Phone Field for Fluent Forms](https://wordpress.org/plugins/smart-phone-field-for-wp-forms/)
+[Smart Phone Field for Contact Form 7](https://wordpress.org/plugins/smart-phone-field-for-wp-forms/)
+[Smart Phone Field for Elementor Form](https://wordpress.org/plugins/smart-phone-field-for-wp-forms/)
+Smart Phone Field For WooCommerce (upcoming)
+Smart Phone Field For Formidable Forms (upcoming)
+Smart Phone Field For Ninja Forms (upcoming)
 
 == Screenshots ==
 
