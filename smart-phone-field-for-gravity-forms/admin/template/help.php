@@ -1,5 +1,6 @@
 <?php
 
+if (! defined('ABSPATH')) exit;
 $faqs = [
     [
         'question' => __('Is this plugin captcha country code?', 'smart-phone-field-for-gravity-forms'),

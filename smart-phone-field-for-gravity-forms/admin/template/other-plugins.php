@@ -1,6 +1,8 @@
 <?php
 
-$GFRS_Plugins = [
+if (! defined('ABSPATH')) exit;
+
+$GFSPF_Plugins = [
     [
         'name' => 'Smart phone field for Gravity Forms',
         'slug' => 'smart-phone-field-for-gravity-forms',
@@ -131,7 +133,7 @@ $GFRS_Plugins = [
     </div>
 
     <div class="pcafe_plugin_wrap">
-        <?php foreach ($GFRS_Plugins as $key => $plugin) :
+        <?php foreach ($GFSPF_Plugins as $key => $plugin) :
             $plugin_path = WP_PLUGIN_DIR . '/' . $plugin['path'];
             $plugin_file = $plugin['slug'];
             $path = $plugin['path'];

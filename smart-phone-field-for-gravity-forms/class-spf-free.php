@@ -3,7 +3,6 @@
 GFForms::include_addon_framework();
 
 class GFSPFFreeAddOn extends GFAddOn {
-
     protected $_version = GF_SMART_PHONE_FIELD_VERSION_NUM;
     protected $_min_gravityforms_version = '1.9';
     protected $_slug = 'smart-phone-field-for-gravity-forms';
@@ -295,7 +294,6 @@ class GFSPFFreeAddOn extends GFAddOn {
 
         return $fields;
     }
-
 
     public function is_smart_phone_field($field) {
         return rgar($field, 'type') === 'phone' && rgar($field, 'smartPhoneFieldGField');

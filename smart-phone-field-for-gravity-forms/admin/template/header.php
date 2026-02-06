@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<div class="pcafe_menu">
+<div class="pcafe_menu_wrapper">
     <div class="pcafe_menu_content">
         <ul class="pcafe_menu_wrap">
             <li class="active">
