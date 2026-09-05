@@ -46,6 +46,7 @@ jQuery(document).ready(function ($) {
         toggleSpfDefaultSetting();
         toggleSpfOptions();
         toggleCountries();
+        togglePhoneFormat(Boolean(field.smartPhoneFieldGField));
     });
 
     function toggleSpfDefaultSetting() {
@@ -68,10 +69,10 @@ jQuery(document).ready(function ($) {
     function toggleSpfOptions() {
         var isEnabled = $("#spf_enable_value").is(":checked");
         var configType = $("#spf_configuration_type").val();
-    
+
         if (isEnabled) {
             $("#spf_option").show();
-            
+
             if (configType === 'custom') {
                 $("#spf_custom_options").show();
             } else {
@@ -83,8 +84,25 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    function togglePhoneFormat(isEnabled) {
+        var $phoneFormat = $("#field_phone_format");
+        if (!$phoneFormat.length) {
+            return;
+        }
+
+        if (isEnabled) {
+            if ($phoneFormat.val() !== 'international') {
+                $phoneFormat.val('international').trigger('change');
+            }
+            $phoneFormat.prop('disabled', true);
+        } else {
+            $phoneFormat.prop('disabled', false);
+        }
+    }
+
     $(document).on("change", "#spf_enable_value", function () {
         toggleSpfOptions();
+        togglePhoneFormat($(this).is(":checked"));
     });
 
     $(document).on("change", "#spf_auto_ip_value", function () {

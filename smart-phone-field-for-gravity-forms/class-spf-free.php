@@ -58,7 +58,7 @@ class GFSPFFreeAddOn extends GFAddOn {
             array(
                 'handle'  => 'spf_main',
                 'src'     => $this->get_base_url() . '/assets/js/spf_main.js',
-                'version' => $this->_version,
+                'version' => time(),
                 'deps'    => array('jquery', 'spf_intlTelInput'),
                 'enqueue'  => array(
                     array('field_types' => array('phone'))
@@ -164,16 +164,6 @@ class GFSPFFreeAddOn extends GFAddOn {
                             <option value="flagcode">Flag separate country code</option>
                             <option value="flag">Flag only</option>
                         </select>
-                        <p style="border: 1px solid #ffbe03; padding: 8px 12px; border-radius: 3px; font-size: 12px;">
-                            <?php
-                            printf(
-                                wp_kses(
-                                    __('Choose <strong>Flag separate country code</strong> for getting country/dial code in notification/entries.', 'smart-phone-field-for-gravity-forms'),
-                                    ['strong' => []]
-                                )
-                            );
-                            ?>
-                        </p>
                     </li>
                     <li class="spf_auto_ip_setting field_setting">
                         <ul>
@@ -526,12 +516,6 @@ class GFSPFFreeAddOn extends GFAddOn {
                 jQuery("#spf_country_flag_value").val(field["countryFlagGField"]);
                 jQuery("#spf_configuration_type").val(field["configurationType"]);
                 jQuery("#spf_dropdown_countries").val(field["exInCountryGField"]);
-            });
-
-            jQuery('body').on('change', '#spf_enable_value', function(e) {
-                if (jQuery(this).is(':checked')) {
-                    jQuery(this).parent().parent().parent().parent().find('#field_phone_format').val('international').change();
-                }
             });
         </script>
 <?php

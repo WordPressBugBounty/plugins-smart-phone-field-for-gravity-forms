@@ -6,6 +6,7 @@ class SmartPhoneFieldFree {
 
     init() {
         this.initSmartPhoneFieldFree();
+        this.addCountryCodeInputHandler();
     }
 
     initSmartPhoneFieldFree() {
@@ -19,24 +20,22 @@ class SmartPhoneFieldFree {
             return;
         }
 
+        const preValue = input.value;
         const iti = window.intlTelInput(input, this.configuration());
-
-        input.addEventListener('keypress', function (e) {
-            const charCode = e.which ? e.which : e.keyCode;
-            if (String.fromCharCode(charCode).match(/[^0-9+]/g)) {
-                e.preventDefault();
-            }
-        });
-
-        this.addCountryCodeInputHandler(input, iti);
+        const fieldId = `${this.options.formId}_${this.options.fieldId}`;
 
         input.addEventListener('blur', (e) => {
-            this.validateNumber(input, iti);
+            this.validateNumber(e.currentTarget, fieldId, iti);
         });
 
         input.addEventListener('keyup', (e) => {
-            this.formatValidation(input, iti);
+            this.formatValidation(e.currentTarget, iti);
         });
+
+        if (preValue) {
+            iti.setNumber(preValue);
+            this.validateNumber(input, fieldId, iti);
+        }
     }
 
     configuration() {
@@ -104,41 +103,52 @@ class SmartPhoneFieldFree {
         };
     }
 
-    validateNumber(input, iti) {
-        const isValid = iti.isValidNumber();
-        const errorMsg = input.parentNode?.parentNode?.querySelector(".error-msg");
-        const validMsg = input.parentNode?.parentNode?.querySelector(".valid-msg");
-
-        if (!errorMsg || !validMsg) {
-            console.warn('Error or valid message elements not found');
+    validateNumber(input, fieldId, iti) {
+        if (!input.value) {
+            const errorMsg = input.parentNode?.parentNode?.querySelector('.error-msg');
+            const validMsg = input.parentNode?.parentNode?.querySelector('.valid-msg');
+            if (errorMsg) errorMsg.classList.add('hide');
+            if (validMsg) validMsg.classList.add('hide');
             return;
         }
 
-        if (input.value) {
+        const isValid = iti.isValidNumber();
+        const errorMsg = input.parentNode?.parentNode?.querySelector('.error-msg');
+        const validMsg = input.parentNode?.parentNode?.querySelector('.valid-msg');
+        const hiddenInput = input.parentNode?.parentNode?.querySelector('input[type="hidden"]');
+        const number = iti.getNumber(intlTelInput.utils.numberFormat.E164);
+
+        if (errorMsg && validMsg && input.value) {
             if (isValid) {
                 errorMsg.classList.add('hide');
                 validMsg.classList.remove('hide');
+                input.setAttribute('aria-invalid', 'false');
             } else {
                 validMsg.classList.add('hide');
                 errorMsg.classList.remove('hide');
+                input.setAttribute('aria-invalid', 'true');
             }
+            hiddenInput.value = number;
         } else {
             validMsg.classList.add('hide');
-            errorMsg.classList.add('hide');
+	        errorMsg.classList.add('hide');
         }
     }
 
     formatValidation(input, iti) {
-        const isValid = iti.isValidNumber();
-        const errorMsg = input.parentNode?.parentNode?.querySelector(".error-msg");
-        const validMsg = input.parentNode?.parentNode?.querySelector(".valid-msg");
-
-        if (!errorMsg || !validMsg) {
-            console.warn('Error or valid message elements not found');
+        if (!input.value) {
+            const errorMsg = input.parentNode?.parentNode?.querySelector('.error-msg');
+            const validMsg = input.parentNode?.parentNode?.querySelector('.valid-msg');
+            if (errorMsg) errorMsg.classList.add('hide');
+            if (validMsg) validMsg.classList.add('hide');
             return;
         }
 
-        if (input.value) {
+        const isValid = iti.isValidNumber();
+        const errorMsg = input.parentNode?.parentNode?.querySelector('.error-msg');
+        const validMsg = input.parentNode?.parentNode?.querySelector('.valid-msg');
+
+        if (errorMsg && validMsg) {
             if (isValid) {
                 errorMsg.classList.add('hide');
                 validMsg.classList.remove('hide');
@@ -146,14 +156,21 @@ class SmartPhoneFieldFree {
                 validMsg.classList.add('hide');
                 errorMsg.classList.add('hide');
             }
-        } else {
-            validMsg.classList.add('hide');
-            errorMsg.classList.add('hide');
         }
     }
 
-    addCountryCodeInputHandler(inputElement, iti) {
+    addCountryCodeInputHandler() {
         if (this.options.flag !== 'flagcode') {
+            return;
+        }
+
+        const input = document.querySelector(this.options.inputId);
+        if (!input) {
+            return;
+        }
+
+        const iti = intlTelInput.getInstance(input);
+        if (!iti) {
             return;
         }
 
@@ -163,13 +180,13 @@ class SmartPhoneFieldFree {
             this.updateCountryCodeHandler(event.currentTarget, currentCode);
         };
 
-        inputElement.addEventListener('keydown', handleCountryChange);
-        inputElement.addEventListener('input', handleCountryChange);
-        inputElement.addEventListener('countrychange', handleCountryChange);
+        input.addEventListener('keydown', handleCountryChange);
+        input.addEventListener('input', handleCountryChange);
+        input.addEventListener('countrychange', handleCountryChange);
     }
 
-    updateCountryCodeHandler(input, currentCode) {
-        let value = input.value;
+    updateCountryCodeHandler(element, currentCode) {
+        let value = element.value;
 
         if (!currentCode || currentCode === '+undefined' || ['', '+'].includes(value)) {
             return;
@@ -177,7 +194,7 @@ class SmartPhoneFieldFree {
 
         if (!value.startsWith(currentCode)) {
             value = value.replace(/\+/g, '');
-            input.value = currentCode + value;
+            element.value = currentCode + value;
         }
     }
 }
