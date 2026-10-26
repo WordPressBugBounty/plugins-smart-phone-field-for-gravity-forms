@@ -6,7 +6,7 @@ Tags: Gravityforms, smart phone field, international phone input, phone field, p
 Requires at least: 6.0
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable Tag: 2.2.2
+Stable Tag: 2.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
@@ -45,7 +45,7 @@ A simple and nice plugin to get auto country flag from user ip address on gravit
 = Requirements =
 
 * PHP 7.4
-* Gravity 2.9.0 or higher
+* Gravity 3.0.0 or higher
 
 
 <strong>Smart Phone Field for other contact form addons</strong>
@@ -80,6 +80,12 @@ It's fixed with a single-page form.
 Installation is fairly straight forward. Install it from the WordPress plugin repository. 
 
 == Change log ==
+
+= 2.2.3 =
+* Repeater Field Support
+* Update SDK
+* Minor bugs fix
+
 = 2.2.2 =
 * Update SDK
 * Add country code

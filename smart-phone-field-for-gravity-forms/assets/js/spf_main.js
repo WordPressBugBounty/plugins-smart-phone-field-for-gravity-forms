@@ -1,22 +1,61 @@
 class SmartPhoneFieldFree {
+    // Keeps one instance per field so repeated gform_post_render events
+    // (ajax validation, multi-page, repeater re-renders) don't stack
+    // document-level listeners.
+    static instances = new Map();
+
     constructor(options) {
+        const key = `${options.formId}_${options.fieldId}`;
+
+        if (SmartPhoneFieldFree.instances.has(key)) {
+            const existing = SmartPhoneFieldFree.instances.get(key);
+            existing.options = options;
+            existing.init();
+            return existing;
+        }
+
         this.options = options;
+        this.repeaterListener = null;
+
+        SmartPhoneFieldFree.instances.set(key, this);
         this.init();
     }
 
     init() {
         this.initSmartPhoneFieldFree();
         this.addCountryCodeInputHandler();
+        this.bindRepeaterListeners();
+    }
+
+    /**
+     * Collects every input belonging to this field: the input itself plus one
+     * input per repeater row (ids get a "-{index}" suffix inside repeaters,
+     * e.g. #input_12_3-0). The hidden repeater template row is excluded.
+     */
+    getInputs(root) {
+        const scope = root || document;
+        const baseId = (this.options.inputId || '').replace(/^#/, '');
+
+        if (!baseId) {
+            return [];
+        }
+
+        const inputs = scope.querySelectorAll(`#${baseId}, input[id^="${baseId}-"]`);
+
+        return Array.from(inputs).filter((input) => !input.closest('.gfield_repeater_template'));
     }
 
     initSmartPhoneFieldFree() {
         if (typeof intlTelInput === 'undefined') {
             return;
         }
-        const input = document.querySelector(this.options.inputId);
 
-        if (!input) {
-            console.warn(`Input element not found: ${this.options.inputId}`);
+        this.getInputs().forEach((input) => this.initInput(input));
+    }
+
+    initInput(input) {
+        // Already initialized (e.g. gform_post_render fired again on the same DOM).
+        if (typeof intlTelInput.getInstance === 'function' && intlTelInput.getInstance(input)) {
             return;
         }
 
@@ -36,11 +75,38 @@ class SmartPhoneFieldFree {
             iti.setNumber(preValue);
             this.validateNumber(input, fieldId, iti);
         }
+
+        this.attachCountryCodeHandler(input, iti);
+    }
+
+    /**
+     * Gravity Forms fires this DOM event on document after a repeater row is
+     * added. The row is cloned from the (uninitialized) template, so its phone
+     * inputs need to be initialized here.
+     */
+    bindRepeaterListeners() {
+        if (this.repeaterListener) {
+            return;
+        }
+
+        this.repeaterListener = (event) => {
+            if (typeof intlTelInput === 'undefined') {
+                return;
+            }
+
+            const clone = event.detail && event.detail.clone;
+
+            if (!clone || typeof clone.querySelectorAll !== 'function') {
+                return;
+            }
+
+            this.getInputs(clone).forEach((input) => this.initInput(input));
+        };
+
+        document.addEventListener('gform/repeater/post_item_add', this.repeaterListener);
     }
 
     configuration() {
-        const field_id = `input_${this.options.fieldId}`;
-
         let config = {
             initialCountry: this.options.defaultCountry,
             formatOnDisplay: false,
@@ -48,7 +114,7 @@ class SmartPhoneFieldFree {
             fixDropdownWidth: true,
             hiddenInput: function (telInputName) {
                 return {
-                    phone: field_id
+                    phone: telInputName
                 };
             },
             useFullscreenPopup: false
@@ -164,15 +230,18 @@ class SmartPhoneFieldFree {
             return;
         }
 
-        const input = document.querySelector(this.options.inputId);
-        if (!input) {
+        this.getInputs().forEach((input) => {
+            const iti = intlTelInput.getInstance(input);
+            this.attachCountryCodeHandler(input, iti);
+        });
+    }
+
+    attachCountryCodeHandler(input, iti) {
+        if (this.options.flag !== 'flagcode' || !iti || input.dataset.spfCountryHandler) {
             return;
         }
 
-        const iti = intlTelInput.getInstance(input);
-        if (!iti) {
-            return;
-        }
+        input.dataset.spfCountryHandler = '1';
 
         const handleCountryChange = (event) => {
             const currentCountryData = iti.getSelectedCountryData();

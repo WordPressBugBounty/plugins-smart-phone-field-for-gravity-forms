@@ -52,7 +52,8 @@ class GFSPFFreeAddOn extends GFAddOn {
                 'version' => $this->_version,
                 'deps'    => array('jquery'),
                 'enqueue'  => array(
-                    array('field_types' => array('phone'))
+                    array('field_types' => array('phone')),
+                    array('admin_page' => 'form_editor', 'field_types' => array('phone'))
                 )
             ),
             array(
@@ -61,7 +62,8 @@ class GFSPFFreeAddOn extends GFAddOn {
                 'version' => time(),
                 'deps'    => array('jquery', 'spf_intlTelInput'),
                 'enqueue'  => array(
-                    array('field_types' => array('phone'))
+                    array('field_types' => array('phone')),
+                    array('admin_page' => 'form_editor', 'field_types' => array('phone'))
                 )
             )
         );
@@ -76,7 +78,8 @@ class GFSPFFreeAddOn extends GFAddOn {
                 'src'     => $this->get_base_url() . '/assets/css/intlTelInput.min.css',
                 'version' => $this->_version,
                 'enqueue' => array(
-                    array('field_types' => array('phone'))
+                    array('field_types' => array('phone')),
+                    array('admin_page' => 'form_editor', 'field_types' => array('phone'))
                 )
             ),
             array(
@@ -227,7 +230,7 @@ class GFSPFFreeAddOn extends GFAddOn {
         require_once(GFCommon::get_base_path() . '/form_display.php');
 
         foreach ($smart_phone_fields as $field) {
-            $form_id = $field['formId'];
+            $form_id = $form['id'];
             $id      = $field['id'];
 
             $common_args = [
@@ -277,12 +280,34 @@ class GFSPFFreeAddOn extends GFAddOn {
         $fields = array();
 
         foreach ($form['fields'] as $field) {
-            if ($this->is_smart_phone_field($field)) {
-                $fields[] = $field;
-            }
+            $this->collect_smart_phone_fields($field, $fields);
         }
 
         return $fields;
+    }
+
+    /**
+     * Recursively collects smart phone fields, including fields nested
+     * inside repeater fields at any depth.
+     *
+     * @param object $field  The field object.
+     * @param array  $fields Collected smart phone fields, passed by reference.
+     */
+    public function collect_smart_phone_fields($field, &$fields) {
+        if ($this->is_smart_phone_field($field)) {
+            $fields[] = $field;
+        }
+
+        $children = array();
+        if (isset($field->fields) && is_array($field->fields)) {
+            $children = $field->fields;
+        } elseif (isset($field->subfields) && is_array($field->subfields)) {
+            $children = $field->subfields;
+        }
+
+        foreach ($children as $child) {
+            $this->collect_smart_phone_fields($child, $fields);
+        }
     }
 
     public function is_smart_phone_field($field) {
@@ -481,8 +506,20 @@ class GFSPFFreeAddOn extends GFAddOn {
     }
 
     public function spf_editor_script() {
+        $global_settings = array(
+            'defaultCountry' => $this->get_plugin_setting('default_country') ? $this->get_plugin_setting('default_country') : 'us',
+            'autoIp'         => $this->get_plugin_setting('auto_ip') ? $this->get_plugin_setting('auto_ip') : false,
+            'flag'           => $this->get_plugin_setting('flag_options') ? $this->get_plugin_setting('flag_options') : 'flagwithcode',
+            'exIn'           => $this->get_plugin_setting('county_type') ? $this->get_plugin_setting('county_type') : false,
+            'countries'      => $this->get_plugin_setting('countries') ? implode(',', (array) $this->get_plugin_setting('countries')) : 'none',
+            'countrySearch'  => $this->get_plugin_setting('country_search') ? $this->get_plugin_setting('country_search') : true,
+            'placeholder'    => $this->get_plugin_setting('rm_placeholder') ? $this->get_plugin_setting('rm_placeholder') : false,
+        );
     ?>
         <script type='text/javascript'>
+            //global plugin settings for the editor preview (mirrors the frontend config)
+            window.spf_global_settings = <?php echo wp_json_encode($global_settings); ?>;
+
             //adding setting to fields of type "phone"
             fieldSettings.phone += ", .spf_global_select_field";
             fieldSettings.phone += ", .spf_dropdown_countries";
